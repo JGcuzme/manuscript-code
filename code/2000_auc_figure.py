@@ -1,3 +1,9 @@
+"""
+Figure 4: ROC curve with sample size of 2000
+"""
+
+
+
 ## 图像显示中文的问题
 import matplotlib
 matplotlib.rcParams['axes.unicode_minus']=False
@@ -15,7 +21,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # 导入数据1，路径中要使用\\或者/或者在路径前面加r
-dataset1 = pd.read_csv(r'C:\users\14903\Desktop\submitting\data\feature set 4.csv')
+dataset1 = pd.read_csv(r'C:\users\14903\Desktop\Supplemental Files\data\feature set 4.csv')
 
 # 将字符串类型的分类变量重新编码
 label = LabelEncoder()
@@ -42,17 +48,12 @@ X1_train,X1_test,Y1_train,Y1_test = train_test_split(dataset1[train_x1],dataset1
 
 # 使用随机森林对数据集进行分类
 RFC1 = RandomForestClassifier(
-                              # n_estimators=84,
-                              # # bootstrap=False,
-                              # max_depth=12,
                               oob_score=True,
-                              # max_features="log2",
-                              # # class_weight="balanced",
                               random_state=22)
 RFC1.fit(X1_train,Y1_train)
 
 # 导入数据2，路径中要使用\\或者/或者在路径前面加r
-dataset2 = pd.read_csv(r'C:\users\14903\Desktop\submitting\data\feature set 5.csv')
+dataset2 = pd.read_csv(r'C:\users\14903\Desktop\Supplemental Files\data\feature set 5.csv')
 
 # 将字符串类型的分类变量重新编码
 label = LabelEncoder()
@@ -79,16 +80,12 @@ X2_train,X2_test,Y2_train,Y2_test = train_test_split(dataset2[train_x2],dataset2
 
 # 使用随机森林对数据集进行分类
 RFC2 = RandomForestClassifier(
-                              # n_estimators=111,
-                              # max_depth=12,
                               oob_score=True,
-                              # max_features="log2",
-                              # class_weight="balanced",
                               random_state=22)
 RFC2.fit(X2_train,Y2_train)
 
 # 导入数据，路径中要使用\\或者/或者在路径前面加r
-dataset3 = pd.read_csv(r'C:\users\14903\Desktop\submitting\data\feature set 6.csv')
+dataset3 = pd.read_csv(r'C:\users\14903\Desktop\Supplemental Files\data\feature set 6.csv')
 
 # 将字符串类型的分类变量重新编码
 label = LabelEncoder()
@@ -115,11 +112,7 @@ X3_train,X3_test,Y3_train,Y3_test = train_test_split(dataset3[train_x3],dataset3
 
 # 使用随机森林对数据集进行分类
 RFC3 = RandomForestClassifier(
-                              # n_estimators=17,
-                              # max_depth=12,
                               oob_score=True,
-                              # max_features="log2",
-                              # class_weight="balanced",
                               random_state=22)
 RFC3.fit(X3_train,Y3_train)
 
@@ -139,11 +132,11 @@ FPR_NB3,TPR_NB3,_ = roc_curve(Y3_test,pre_test3)
 aucval3 = auc(FPR_NB3,TPR_NB3)  # 计算auc的取值
 
 
-plt.figure(figsize=(8,8))
+plt.figure(figsize=(8,8),dpi=120)
 plt.plot([0,1],[0,1],"k--")
-plt.plot(FPR_NB1, TPR_NB1,"r",linewidth = 3,label="Model 4")
-plt.plot(FPR_NB2, TPR_NB2,"b",linewidth = 3,label="Model 5")
-plt.plot(FPR_NB3, TPR_NB3,"g",linewidth = 3,label="Model 6")
+plt.plot(FPR_NB1, TPR_NB1,"r",linewidth = 3,label="Model 4(feature set 4 + RF)")
+plt.plot(FPR_NB2, TPR_NB2,"b",linewidth = 3,label="Model 5(feature set 5 + RF)")
+plt.plot(FPR_NB3, TPR_NB3,"g",linewidth = 3,label="Model 6(feature set 6 + RF)")
 plt.grid()
 plt.xlabel("FPR")
 plt.ylabel("TPR")
