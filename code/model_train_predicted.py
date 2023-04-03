@@ -1230,7 +1230,220 @@ def ABC4():
     feat_important = ABC1.feature_importances_
     print(feat_important)
 
+    
+def NHANES1():
+    # 导入数据，路径中要使用\\或者/或者在路径前面加r
+    dataset = pd.read_csv(r'.\data\feature set 9.csv')
 
+    # 将字符串类型的分类变量重新编码
+    label = LabelEncoder()
+    dataset["RIAGENDR"] = label.fit_transform(dataset["RIAGENDR"])   # 1性别
+    dataset["RIDAGEYR"] = label.fit_transform(dataset["RIDAGEYR"])   # 2年龄
+    dataset["RIDRETH3"] = label.fit_transform(dataset["RIDRETH3"])   # 3种族
+    dataset["BPXSY1"] = label.fit_transform(dataset["BPXSY1"])       # 4收缩压
+    dataset["BPXDI1"] = label.fit_transform(dataset["BPXDI1"])       # 5舒张压
+    dataset["BMXWT"] = label.fit_transform(dataset["BMXWT"])         # 6体重
+    dataset["BMXBMI"] = label.fit_transform(dataset["BMXBMI"])       # 7BMI
+    dataset["URXUMA"] = label.fit_transform(dataset["URXUMA"])       # 8白蛋白
+    dataset["URXUCR"] = label.fit_transform(dataset["URXUCR"])       # 9肌酐
+    dataset["URDACT"] = label.fit_transform(dataset["URDACT"])       # 10白蛋白肌酐比值
+    dataset["LBDHDD"] = label.fit_transform(dataset["LBDHDD"])       # 11高密度脂蛋白
+    dataset["LBXTR"] = label.fit_transform(dataset["LBXTR"])         # 12甘油三酯
+    dataset["LBDLDL"] = label.fit_transform(dataset["LBDLDL"])       # 13低密度脂蛋白
+    dataset["LBXTC"] = label.fit_transform(dataset["LBXTC"])         # 14总胆固醇
+    dataset["LBXGH"] = label.fit_transform(dataset["LBXGH"])         # 15糖化血红蛋白
+    dataset["LBXIN"] = label.fit_transform(dataset["LBXIN"])         # 16胰岛素
+    dataset["LBXGLU"] = label.fit_transform(dataset["LBXGLU"])       # 17空腹血糖
+    dataset["Outcome"] = label.fit_transform(dataset["DIQ010"])
+
+    # 定于预测目标变量
+    target = ["Outcome"]
+
+    # 定义模型的自变量
+    train_x = ["RIDAGEYR", "RIDRETH3", "BPXSY1", "BPXDI1",
+               "BMXWT", "BMXBMI", "URXUMA", "URXUCR", "URDACT",
+               "LBDHDD", "LBXTR", "LBDLDL", "LBXTC", "LBXGH",
+               "LBXIN", "LBXGLU"]
+
+    # 将数据集切分为训练集和测试集
+    X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
+                                                        test_size=0.3, random_state=215)  # random_state 是随机数种子
+
+
+    # 使用随机森林对数据集进行分类
+    RFC1 = RandomForestClassifier(
+                                  oob_score=True,
+                                  random_state=215)
+    RFC1.fit(X_train, Y_train)
+
+    # 输出其在训练集和测试集上的预测精度
+    RFC1_train = RFC1.predict(X_train)
+    RFC1_test = RFC1.predict(X_test)
+    print("随机森林的OOB score:", RFC1.oob_score_)
+    print("训练数据集上的精度:", accuracy_score(Y_train, RFC1_train))
+    print("验证数据集上的精度:", accuracy_score(Y_test, RFC1_test))
+
+    # 可视化在测试集上的ROC曲线
+    pre_test = RFC1.predict_proba(X_test)[:, 1]
+    FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
+    aucval = auc(FPR_NB, TPR_NB)  # 计算auc的取值
+    plt.figure(figsize=(8, 8))
+    plt.plot([0, 1], [0, 1], "k--")
+    plt.plot(FPR_NB, TPR_NB, "r", linewidth=3)
+    plt.grid()
+    plt.xlabel("假正率")
+    plt.ylabel("真正率")
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
+    plt.title("随机森林ROC曲线")
+    plt.text(0.05, 0.9, "AUC = "+str(round(aucval, 4)))
+    plt.show()
+
+    feat_important = RFC1.feature_importances_
+    print(feat_important)
+    
+ def NHANES2():
+    # 导入数据，路径中要使用\\或者/或者在路径前面加r
+    dataset = pd.read_csv(r'.\data\feature set 10.csv')
+
+    # 将字符串类型的分类变量重新编码
+    label = LabelEncoder()
+    dataset["RIAGENDR 2"] = label.fit_transform(dataset["RIAGENDR 2"])
+    dataset["BMXWTLBXGH"] = label.fit_transform(dataset["BMXWTLBXGH"])
+    dataset["RIAGENDR 1"] = label.fit_transform(dataset["RIAGENDR 1"])
+    dataset["RIAGENDR 3"] = label.fit_transform(dataset["RIAGENDR 3"])
+    dataset["RIAGENDRRIAGENDR 1"] = label.fit_transform(dataset["RIAGENDRRIAGENDR 1"])
+    dataset["BPXSY1RIAGENDR 1"] = label.fit_transform(dataset["BPXSY1RIAGENDR 1"])
+    dataset["LBXGHRIAGENDR 1"] = label.fit_transform(dataset["LBXGHRIAGENDR 1"])
+    dataset["RIAGENDRRIDAGEYR 1"] = label.fit_transform(dataset["RIAGENDRRIDAGEYR 1"])
+    dataset["URXUCRLBXGLU"] = label.fit_transform(dataset["URXUCRLBXGLU"])
+    dataset["RIAGENDRBPXSY1"] = label.fit_transform(dataset["RIAGENDRBPXSY1"])
+    dataset["RIAGENDRLBXGH"] = label.fit_transform(dataset["RIAGENDRLBXGH"])
+    dataset["RIDRETH3 3"] = label.fit_transform(dataset["RIDRETH3 3"])
+    dataset["LBXGLURIAGENDR 1"] = label.fit_transform(dataset["LBXGLURIAGENDR 1"])
+    dataset["LBXTR 1"] = label.fit_transform(dataset["LBXTR 1"])
+    dataset["URXUCRRIDAGEYR 1"] = label.fit_transform(dataset["URXUCRRIDAGEYR 1"])
+    dataset["LBXGLURIDRETH3 1"] = label.fit_transform(dataset["LBXGLURIDRETH3 1"])
+    dataset["LBXTRBMXWT 1"] = label.fit_transform(dataset["LBXTRBMXWT 1"])
+    dataset["Outcome"] = label.fit_transform(dataset["DIQ010"])
+
+    # 定于预测目标变量
+    target = ["Outcome"]
+
+    # 定义模型的自变量
+    train_x = ["RIAGENDR 2", "BMXWTLBXGH", "RIAGENDR 1", "RIAGENDR 3", "RIAGENDRRIAGENDR 1",
+               "BPXSY1RIAGENDR 1", "LBXGHRIAGENDR 1", "RIAGENDRRIDAGEYR 1", "URXUCRLBXGLU", "RIAGENDRBPXSY1",
+               "RIAGENDRLBXGH", "RIDRETH3 3", "LBXGLURIAGENDR 1", "LBXTR 1", "URXUCRRIDAGEYR 1",
+               "LBXGLURIDRETH3 1", "LBXTRBMXWT 1"]
+
+    # 将数据集切分为训练集和测试集
+    X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
+                                                        test_size=0.3, random_state=215)  # random_state 是随机数种子
+
+
+    # 使用随机森林对数据集进行分类
+    RFC1 = RandomForestClassifier(
+                                  oob_score=True,
+                                  random_state=215)
+    RFC1.fit(X_train, Y_train)
+
+    # 输出其在训练集和测试集上的预测精度
+    RFC1_train = RFC1.predict(X_train)
+    RFC1_test = RFC1.predict(X_test)
+    print("随机森林的OOB score:", RFC1.oob_score_)
+    print("训练数据集上的精度:", accuracy_score(Y_train, RFC1_train))
+    print("验证数据集上的精度:", accuracy_score(Y_test, RFC1_test))
+
+    # 可视化在测试集上的ROC曲线
+    pre_test = RFC1.predict_proba(X_test)[:, 1]
+    FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
+    aucval = auc(FPR_NB, TPR_NB)  # 计算auc的取值
+    plt.figure(figsize=(8, 8))
+    plt.plot([0, 1], [0, 1], "k--")
+    plt.plot(FPR_NB, TPR_NB, "r", linewidth=3)
+    plt.grid()
+    plt.xlabel("假正率")
+    plt.ylabel("真正率")
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
+    plt.title("随机森林ROC曲线")
+    plt.text(0.05, 0.9, "AUC = "+str(round(aucval, 4)))
+    plt.show()
+
+    feat_important = RFC1.feature_importances_
+    print(feat_important)
+    
+def NHANES3():
+    # 导入数据，路径中要使用\\或者/或者在路径前面加r
+    dataset = pd.read_csv(r'.\data\feature set 11.csv')
+
+    # 将字符串类型的分类变量重新编码
+    label = LabelEncoder()
+
+    dataset["RIAGENDR 2"] = label.fit_transform(dataset["RIAGENDR 2"])
+    dataset["BMXWTLBXGH"] = label.fit_transform(dataset["BMXWTLBXGH"])
+    dataset["RIAGENDR 1"] = label.fit_transform(dataset["RIAGENDR 1"])
+    dataset["RIAGENDR 3"] = label.fit_transform(dataset["RIAGENDR 3"])
+    dataset["RIAGENDRRIAGENDR 1"] = label.fit_transform(dataset["RIAGENDRRIAGENDR 1"])
+    dataset["BPXSY1RIAGENDR 1"] = label.fit_transform(dataset["BPXSY1RIAGENDR 1"])
+    dataset["LBXGHRIAGENDR 1"] = label.fit_transform(dataset["LBXGHRIAGENDR 1"])
+    dataset["RIAGENDRRIDAGEYR 1"] = label.fit_transform(dataset["RIAGENDRRIDAGEYR 1"])
+    dataset["URXUCRLBXGLU"] = label.fit_transform(dataset["URXUCRLBXGLU"])
+    dataset["RIAGENDRBPXSY1"] = label.fit_transform(dataset["RIAGENDRBPXSY1"])
+    dataset["RIAGENDRLBXGH"] = label.fit_transform(dataset["RIAGENDRLBXGH"])
+    dataset["RIDRETH3 3"] = label.fit_transform(dataset["RIDRETH3 3"])
+    dataset["LBXGLURIAGENDR 1"] = label.fit_transform(dataset["LBXGLURIAGENDR 1"])
+    dataset["LBDLDL 1"] = label.fit_transform(dataset["LBDLDL 1"])
+    dataset["URXUCRRIDAGEYR 1"] = label.fit_transform(dataset["URXUCRRIDAGEYR 1"])
+    dataset["LBXGLURIDRETH3 1"] = label.fit_transform(dataset["LBXGLURIDRETH3 1"])
+    dataset["LBDLDLBMXWT 1"] = label.fit_transform(dataset["LBDLDLBMXWT 1"])
+    dataset["Outcome"] = label.fit_transform(dataset["DIQ010"])
+
+    # 定于预测目标变量
+    target = ["Outcome"]
+
+    # 定义模型的自变量
+    train_x = ["RIAGENDR 2", "BMXWTLBXGH", "RIAGENDR 1", "RIAGENDR 3", "RIAGENDRRIAGENDR 1",
+               "BPXSY1RIAGENDR 1", "LBXGHRIAGENDR 1", "RIAGENDRRIDAGEYR 1", "URXUCRLBXGLU", "RIAGENDRBPXSY1",
+               "RIAGENDRLBXGH", "RIDRETH3 3", "LBXGLURIAGENDR 1", "LBDLDL 1", "URXUCRRIDAGEYR 1",
+               "LBXGLURIDRETH3 1", "LBDLDLBMXWT 1"]
+
+    # 将数据集切分为训练集和测试集
+    X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
+                                                        test_size=0.3, random_state=215)  # random_state 是随机数种子
+
+
+    # 使用随机森林对数据集进行分类
+    RFC1 = RandomForestClassifier(
+                                  oob_score=True,
+                                  random_state=215)
+    RFC1.fit(X_train, Y_train)
+
+    # 输出其在训练集和测试集上的预测精度
+    RFC1_train = RFC1.predict(X_train)
+    RFC1_test = RFC1.predict(X_test)
+    print("随机森林的OOB score:", RFC1.oob_score_)
+    print("训练数据集上的精度:", accuracy_score(Y_train, RFC1_train))
+    print("验证数据集上的精度:", accuracy_score(Y_test, RFC1_test))
+
+    # 可视化在测试集上的ROC曲线
+    pre_test = RFC1.predict_proba(X_test)[:, 1]
+    FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
+    aucval = auc(FPR_NB, TPR_NB)  # 计算auc的取值
+    plt.figure(figsize=(8, 8))
+    plt.plot([0, 1], [0, 1], "k--")
+    plt.plot(FPR_NB, TPR_NB, "r", linewidth=3)
+    plt.grid()
+    plt.xlabel("假正率")
+    plt.ylabel("真正率")
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
+    plt.title("随机森林ROC曲线")
+    plt.text(0.05, 0.9, "AUC = "+str(round(aucval, 4)))
+    plt.show()
+
+    feat_important = RFC1.feature_importances_
+    print(feat_important)
 
 if __name__ == '__main__':
 
@@ -1257,3 +1470,7 @@ if __name__ == '__main__':
     # ABC2()         # 768关键特征                模型18
     # ABC3()         # 2000原始数据               模型19
     # ABC4()         # 2000原始数据               模型20
+    
+    # NHANES1()         # 768关键特征                模型21
+    # NHANES2()         # 2000原始数据               模型22
+    # NHANES3()         # 2000原始数据               模型23
