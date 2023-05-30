@@ -9,20 +9,16 @@ warnings.filterwarnings("ignore")
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier,AdaBoostClassifier
-from sklearn.neural_network import MLPClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.naive_bayes import MultinomialNB,GaussianNB,BernoulliNB
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn import svm
 from sklearn.metrics import *
-
 
 
 def RFC1():
     """Random Forest: 768 original data"""
 
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 1.csv')
+    dataset = pd.read_csv(r'..\data\feature set 1.csv')
 
     label = LabelEncoder()
     dataset["Pregnancies"] = label.fit_transform(dataset["Pregnancies"])
@@ -45,7 +41,8 @@ def RFC1():
 
     RFC1 = RandomForestClassifier(
                                     oob_score=True,
-                                    random_state=16
+                                    max_samples=46,
+                                    random_state=123
                                 )
     RFC1.fit(X_train, Y_train)
 
@@ -76,7 +73,7 @@ def RFC1():
 
 def RFC2():
     """Random Forest: 768 Important Feature sets"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 2.csv')
+    dataset = pd.read_csv(r'..\data\feature set 2.csv')
 
 
     label = LabelEncoder()
@@ -100,8 +97,9 @@ def RFC2():
                                                         test_size=0.3, random_state=123)  
 
     RFC1 = RandomForestClassifier(
-        oob_score=True,
-        random_state=16
+                                    oob_score=True,
+                                    max_samples=46,
+                                    random_state=123
     )
     RFC1.fit(X_train, Y_train)
 
@@ -132,7 +130,7 @@ def RFC2():
 
 def RFC3():
     """Random Forest: 768 Key Features"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 3.csv')
+    dataset = pd.read_csv(r'..\data\feature set 3.csv')
 
     label = LabelEncoder()
     dataset["GlucoseBMI"] = label.fit_transform(dataset["GlucoseBMI"])
@@ -155,7 +153,8 @@ def RFC3():
 
     RFC1 = RandomForestClassifier(
                                     oob_score=True,
-                                    random_state=16
+                                    max_samples=46,
+                                    random_state=123
                                 )
     RFC1.fit(X_train, Y_train)
 
@@ -186,7 +185,7 @@ def RFC3():
 
 def RFC4():
     """Random Forest: 2000 original data"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 4.csv')
+    dataset = pd.read_csv(r'..\data\feature set 4.csv')
 
     label = LabelEncoder()
     dataset["Pregnancies00"] = label.fit_transform(dataset["Pregnancies00"])
@@ -208,8 +207,10 @@ def RFC4():
                                                         test_size=0.3, random_state=123) 
 
     RFC1 = RandomForestClassifier(
-        oob_score=True,
-        random_state=22)
+                                    oob_score=True,
+                                    max_samples=978,
+                                    random_state=123
+    )
     RFC1.fit(X_train, Y_train)
 
     RFC1_train = RFC1.predict(X_train)
@@ -239,7 +240,7 @@ def RFC4():
 
 def RFC5():
     """Random Forest: 2000 Important Feature sets"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 5.csv')
+    dataset = pd.read_csv(r'..\data\feature set 5.csv')
 
     label = LabelEncoder()
     dataset["GlucoseAge00"] = label.fit_transform(dataset["GlucoseAge00"])
@@ -261,8 +262,10 @@ def RFC5():
                                                         test_size=0.3, random_state=123)  # random_state 是随机数种子
 
     RFC1 = RandomForestClassifier(
-        oob_score=True,
-        random_state=22)
+                                    oob_score=True,
+                                    max_samples=978,
+                                    random_state=123
+    )
     RFC1.fit(X_train, Y_train)
 
     RFC1_train = RFC1.predict(X_train)
@@ -292,7 +295,7 @@ def RFC5():
 
 def RFC6():
     """Random Forest: 2000 Key Features"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 6.csv')
+    dataset = pd.read_csv(r'..\data\feature set 6.csv')
 
     label = LabelEncoder()
     dataset["GlucoseAge00"] = label.fit_transform(dataset["GlucoseAge00"])
@@ -314,8 +317,10 @@ def RFC6():
                                                         test_size=0.3, random_state=123)  # random_state 是随机数种子
 
     RFC1 = RandomForestClassifier(
-        oob_score=True,
-        random_state=22)
+                                    oob_score=True,
+                                    max_samples=978,
+                                    random_state=123
+    )
     RFC1.fit(X_train, Y_train)
 
     RFC1_train = RFC1.predict(X_train)
@@ -344,7 +349,7 @@ def RFC6():
 
 def RFC7():
     """Random Forest: 768 Causal Permutation"""
-    dataset = pd.read_csv(r'C:.\Supplemental Files\data\feature set 7.csv')
+    dataset = pd.read_csv(r'..\data\feature set 7.csv')
 
     label = LabelEncoder()
     dataset["GlucoseSkinThickness"] = label.fit_transform(dataset["GlucoseSkinThickness"])
@@ -368,8 +373,10 @@ def RFC7():
                                                         test_size=0.3, random_state=123)  
 
     RFC1 = RandomForestClassifier(
-        oob_score=True,
-        random_state=16)
+                                    oob_score=True,
+                                    max_samples=46,
+                                    random_state=123
+    )
     RFC1.fit(X_train, Y_train)
 
     RFC1_train = RFC1.predict(X_train)
@@ -398,7 +405,7 @@ def RFC7():
 
 def RFC8():
     """Random Forest: 2000 Causal Permutation"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 8.csv')
+    dataset = pd.read_csv(r'..\data\feature set 8.csv')
 
     label = LabelEncoder()
     dataset["PregnanciesGlucose00"] = label.fit_transform(dataset["PregnanciesGlucose00"])
@@ -423,8 +430,10 @@ def RFC8():
                                                         test_size=0.3, random_state=123)  
 
     RFC1 = RandomForestClassifier(
-        oob_score=True,
-        random_state=22)
+                                    oob_score=True,
+                                    max_samples=978,
+                                    random_state=123
+    )
     RFC1.fit(X_train, Y_train)
 
     RFC1_train = RFC1.predict(X_train)
@@ -451,9 +460,10 @@ def RFC8():
     print(feat_important)
 
 
-def NNC1():
-    """Neural networks: 768 original data"""
-    dataset = pd.read_csv(r'C:\users\14903\Desktop\Supplemental Files\data\feature set 1.csv')
+def KNN1():
+    """KNN: 768 original data"""
+
+    dataset = pd.read_csv(r'..\data\feature set 1.csv')
 
     label = LabelEncoder()
     dataset["Pregnancies"] = label.fit_transform(dataset["Pregnancies"])
@@ -472,22 +482,20 @@ def NNC1():
                "Age"]
 
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
-                                                        test_size=0.3, random_state=123) 
+                                                        test_size=0.3, random_state=123)
 
-    MLP1 = MLPClassifier(
-                            random_state=63
-                        )
-    MLP1.fit(X_train, Y_train)
+    knn1 = KNeighborsClassifier(n_neighbors=7)
+    knn1.fit(X_train, Y_train)
 
-    MLP1_train = MLP1.predict(X_train)
-    MLP1_test = MLP1.predict(X_test)
+    knn1_train = knn1.predict(X_train)
+    knn1_test = knn1.predict(X_test)
 
-    print("Precision on the training data set:", accuracy_score(Y_train, MLP1_train))
-    print("Precision on the testing data set:", accuracy_score(Y_test, MLP1_test))
+    print("Precision on the training data set:", accuracy_score(Y_train, knn1_train))
+    print("Precision on the testing data set:", accuracy_score(Y_test, knn1_test))
 
-    pre_test = MLP1.predict_proba(X_test)[:, 1]
+    pre_test = knn1.predict_proba(X_test)[:, 1]
     FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
-    aucval = auc(FPR_NB, TPR_NB) 
+    aucval = auc(FPR_NB, TPR_NB)
     plt.figure(figsize=(8, 8))
     plt.plot([0, 1], [0, 1], "k--")
     plt.plot(FPR_NB, TPR_NB, "r", linewidth=3)
@@ -496,14 +504,15 @@ def NNC1():
     plt.ylabel("TPR")
     plt.xlim(0, 1)
     plt.ylim(0, 1)
-    plt.title("Neural network ROC curve")
+    plt.title("KNN ROC curve")
     plt.text(0.05, 0.9, "AUC = " + str(round(aucval, 2)))
     plt.show()
 
 
-def NNC2():
-    """Neural networks: 768 Key features"""
-    dataset = pd.read_csv(r'C:\users\14903\Desktop\Supplemental Files\data\feature set 3.csv')
+def KNN2():
+    """KNN: 768 original data"""
+
+    dataset = pd.read_csv(r'..\data\feature set 3.csv')
 
     label = LabelEncoder()
     dataset["GlucoseBMI"] = label.fit_transform(dataset["GlucoseBMI"])
@@ -522,21 +531,20 @@ def NNC2():
                "GlucoseBloodPressure1", "BloodPressureBMI1", "BMIAge1", "BMIBMI1"]
 
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
-                                                        test_size=0.3, random_state=123)  
+                                                        test_size=0.3, random_state=123)
 
-    MLP1 = MLPClassifier(
-        random_state=63
-    )
-    MLP1.fit(X_train, Y_train)
+    knn1 = KNeighborsClassifier(n_neighbors=7)
+    knn1.fit(X_train, Y_train)
 
-    MLP1_train = MLP1.predict(X_train)
-    MLP1_test = MLP1.predict(X_test)
-    print("Precision on the training data set:", accuracy_score(Y_train, MLP1_train))
-    print("Precision on the testing data set:", accuracy_score(Y_test, MLP1_test))
+    knn1_train = knn1.predict(X_train)
+    knn1_test = knn1.predict(X_test)
 
-    pre_test = MLP1.predict_proba(X_test)[:, 1]
+    print("Precision on the training data set:", accuracy_score(Y_train, knn1_train))
+    print("Precision on the testing data set:", accuracy_score(Y_test, knn1_test))
+
+    pre_test = knn1.predict_proba(X_test)[:, 1]
     FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
-    aucval = auc(FPR_NB, TPR_NB) 
+    aucval = auc(FPR_NB, TPR_NB)
     plt.figure(figsize=(8, 8))
     plt.plot([0, 1], [0, 1], "k--")
     plt.plot(FPR_NB, TPR_NB, "r", linewidth=3)
@@ -545,15 +553,15 @@ def NNC2():
     plt.ylabel("TPR")
     plt.xlim(0, 1)
     plt.ylim(0, 1)
-    plt.title("Neural network ROC curve")
+    plt.title("KNN ROC curve")
     plt.text(0.05, 0.9, "AUC = " + str(round(aucval, 2)))
     plt.show()
 
 
-def NNC3():
-    """Neural networks: 2000 original data"""
+def KNN3():
+    """KNN: 768 original data"""
 
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 4.csv')
+    dataset = pd.read_csv(r'..\data\feature set 4.csv')
 
     label = LabelEncoder()
     dataset["Pregnancies00"] = label.fit_transform(dataset["Pregnancies00"])
@@ -574,19 +582,18 @@ def NNC3():
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
                                                         test_size=0.3, random_state=123)
 
-    MLP1 = MLPClassifier(
-        random_state=16
-    )
-    MLP1.fit(X_train, Y_train)
+    knn1 = KNeighborsClassifier(n_neighbors=12)
+    knn1.fit(X_train, Y_train)
 
-    MLP1_train = MLP1.predict(X_train)
-    MLP1_test = MLP1.predict(X_test)
-    print("Precision on the training data set:", accuracy_score(Y_train, MLP1_train))
-    print("Precision on the testing data set:", accuracy_score(Y_test, MLP1_test))
+    knn1_train = knn1.predict(X_train)
+    knn1_test = knn1.predict(X_test)
 
-    pre_test = MLP1.predict_proba(X_test)[:, 1]
+    print("Precision on the training data set:", accuracy_score(Y_train, knn1_train))
+    print("Precision on the testing data set:", accuracy_score(Y_test, knn1_test))
+
+    pre_test = knn1.predict_proba(X_test)[:, 1]
     FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
-    aucval = auc(FPR_NB, TPR_NB)  
+    aucval = auc(FPR_NB, TPR_NB)
     plt.figure(figsize=(8, 8))
     plt.plot([0, 1], [0, 1], "k--")
     plt.plot(FPR_NB, TPR_NB, "r", linewidth=3)
@@ -595,14 +602,15 @@ def NNC3():
     plt.ylabel("TPR")
     plt.xlim(0, 1)
     plt.ylim(0, 1)
-    plt.title("Neural network ROC curve")
+    plt.title("KNN ROC curve")
     plt.text(0.05, 0.9, "AUC = " + str(round(aucval, 2)))
     plt.show()
 
 
-def NNC4():
-    """Neural networks: 2000 Key features"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 6.csv')
+def KNN4():
+    """KNN: 768 original data"""
+
+    dataset = pd.read_csv(r'..\data\feature set 6.csv')
 
     label = LabelEncoder()
     dataset["GlucoseAge00"] = label.fit_transform(dataset["GlucoseAge00"])
@@ -621,19 +629,18 @@ def NNC4():
                "GlucoseBloodPressure11", "GlucoseBMI11", "BloodPressureBMI11", "DiabetesPedigreeFunctionAge11"]
 
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
-                                                        test_size=0.3, random_state=123)  
+                                                        test_size=0.3, random_state=123)
 
-    MLP1 = MLPClassifier(
-        random_state=16
-    )
-    MLP1.fit(X_train, Y_train)
+    knn1 = KNeighborsClassifier(n_neighbors=12)
+    knn1.fit(X_train, Y_train)
 
-    MLP1_train = MLP1.predict(X_train)
-    MLP1_test = MLP1.predict(X_test)
-    print("Precision on the training data set:", accuracy_score(Y_train, MLP1_train))
-    print("Precision on the testing data set:", accuracy_score(Y_test, MLP1_test))
+    knn1_train = knn1.predict(X_train)
+    knn1_test = knn1.predict(X_test)
 
-    pre_test = MLP1.predict_proba(X_test)[:, 1]
+    print("Precision on the training data set:", accuracy_score(Y_train, knn1_train))
+    print("Precision on the testing data set:", accuracy_score(Y_test, knn1_test))
+
+    pre_test = knn1.predict_proba(X_test)[:, 1]
     FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
     aucval = auc(FPR_NB, TPR_NB)
     plt.figure(figsize=(8, 8))
@@ -644,15 +651,14 @@ def NNC4():
     plt.ylabel("TPR")
     plt.xlim(0, 1)
     plt.ylim(0, 1)
-    plt.title("Neural network ROC curve")
+    plt.title("KNN  ROC curve")
     plt.text(0.05, 0.9, "AUC = " + str(round(aucval, 2)))
     plt.show()
 
 
-
 def IRC1():
     """Logistic regression: 768 original data"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 1.csv')
+    dataset = pd.read_csv(r'..\data\feature set 1.csv')
 
     label = LabelEncoder()
     dataset["Pregnancies"] = label.fit_transform(dataset["Pregnancies"])
@@ -673,7 +679,7 @@ def IRC1():
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
                                                         test_size=0.3, random_state=123) 
 
-    IRC1 = LogisticRegression(random_state=16)
+    IRC1 = LogisticRegression(random_state=123)
     IRC1.fit(X_train, Y_train)
 
     IRC1_train = IRC1.predict(X_train)
@@ -682,7 +688,6 @@ def IRC1():
     print("Precision on the training data set:", accuracy_score(Y_train, IRC1_train))
     print("Precision on the testing data set:", accuracy_score(Y_test, IRC1_test))
 
-    # 可视化在测试集上的ROC曲线
     pre_test = IRC1.predict_proba(X_test)[:, 1]
     FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
     aucval = auc(FPR_NB, TPR_NB)  
@@ -701,7 +706,7 @@ def IRC1():
 
 def IRC2():
     """Logistic Regression: 768 Key features"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 3.csv')
+    dataset = pd.read_csv(r'..\data\feature set 3.csv')
 
     label = LabelEncoder()
     dataset["GlucoseBMI"] = label.fit_transform(dataset["GlucoseBMI"])
@@ -722,7 +727,7 @@ def IRC2():
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
                                                         test_size=0.3, random_state=123)  
 
-    IRC1 = LogisticRegression(random_state=16)
+    IRC1 = LogisticRegression(random_state=123)
     IRC1.fit(X_train, Y_train)
 
     IRC1_train = IRC1.predict(X_train)
@@ -749,7 +754,7 @@ def IRC2():
 
 def IRC3():
     """Logistic regression: 2000 original data"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 4.csv')
+    dataset = pd.read_csv(r'..\data\feature set 4.csv')
 
 
     label = LabelEncoder()
@@ -771,7 +776,7 @@ def IRC3():
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
                                                         test_size=0.3, random_state=123) 
 
-    IRC1 = LogisticRegression(random_state=16)
+    IRC1 = LogisticRegression(random_state=123)
     IRC1.fit(X_train, Y_train)
 
     IRC1_train = IRC1.predict(X_train)
@@ -798,7 +803,7 @@ def IRC3():
 
 def IRC4():
     """Logistic Regression: 2000 Key features"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 6.csv')
+    dataset = pd.read_csv(r'..\data\feature set 6.csv')
 
     label = LabelEncoder()
     dataset["GlucoseAge00"] = label.fit_transform(dataset["GlucoseAge00"])
@@ -819,7 +824,7 @@ def IRC4():
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
                                                         test_size=0.3, random_state=123) 
 
-    IRC1 = LogisticRegression(random_state=16)
+    IRC1 = LogisticRegression(random_state=123)
     IRC1.fit(X_train, Y_train)
 
     IRC1_train = IRC1.predict(X_train)
@@ -847,7 +852,7 @@ def IRC4():
 def ABC1():
     """AdaBoost:768 Original data"""
 
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 1.csv')
+    dataset = pd.read_csv(r'..\data\feature set 1.csv')
 
     label = LabelEncoder()
     dataset["Pregnancies"] = label.fit_transform(dataset["Pregnancies"])
@@ -869,7 +874,7 @@ def ABC1():
                                                         test_size=0.3, random_state=123)  
 
     ABC1 = AdaBoostClassifier(
-        random_state=16
+                                random_state=123
     )
     ABC1.fit(X_train, Y_train)
 
@@ -900,7 +905,7 @@ def ABC1():
 
 def ABC2():
     """AdaBoost:768 key features"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 3.csv')
+    dataset = pd.read_csv(r'..\data\feature set 3.csv')
 
     label = LabelEncoder()
     dataset["GlucoseBMI"] = label.fit_transform(dataset["GlucoseBMI"])
@@ -922,7 +927,7 @@ def ABC2():
                                                         test_size=0.3, random_state=123) 
 
     ABC1 = AdaBoostClassifier(
-        random_state=16
+                                random_state=123
     )
     ABC1.fit(X_train, Y_train)
 
@@ -953,7 +958,7 @@ def ABC2():
 
 def ABC3():
     """AdaBoost:2000 Original data"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 4.csv')
+    dataset = pd.read_csv(r'..\data\feature set 4.csv')
 
     label = LabelEncoder()
     dataset["Pregnancies00"] = label.fit_transform(dataset["Pregnancies00"])
@@ -975,7 +980,7 @@ def ABC3():
                                                         test_size=0.3, random_state=123)  
 
     ABC1 = AdaBoostClassifier(
-        random_state=16
+                                 random_state=123
     )
     ABC1.fit(X_train, Y_train)
 
@@ -1007,7 +1012,7 @@ def ABC3():
 def ABC4():
     """AdaBoost:2000 Key features"""
 
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 6.csv')
+    dataset = pd.read_csv(r'..\data\feature set 6.csv')
 
     label = LabelEncoder()
     dataset["GlucoseAge00"] = label.fit_transform(dataset["GlucoseAge00"])
@@ -1029,7 +1034,7 @@ def ABC4():
                                                         test_size=0.3, random_state=123) 
 
     ABC1 = AdaBoostClassifier(
-        random_state=16
+                                 random_state=123
     )
     ABC1.fit(X_train, Y_train)
 
@@ -1060,7 +1065,7 @@ def ABC4():
     
 def NHANES1():
     """Random Forest: NHANES data"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 9.csv')
+    dataset = pd.read_csv(r'..\data\feature set 9.csv')
 
     label = LabelEncoder()
     dataset["RIAGENDR"] = label.fit_transform(dataset["RIAGENDR"])   
@@ -1090,12 +1095,14 @@ def NHANES1():
                "LBXIN", "LBXGLU"]
 
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
-                                                        test_size=0.3, random_state=215)  
+                                                        test_size=0.3, random_state=215)
 
 
     RFC1 = RandomForestClassifier(
-                                  oob_score=True,
-                                  random_state=215)
+                                    oob_score=True,
+                                    max_samples=99,
+                                    random_state=215
+    )
     RFC1.fit(X_train, Y_train)
 
     RFC1_train = RFC1.predict(X_train)
@@ -1121,10 +1128,11 @@ def NHANES1():
 
     feat_important = RFC1.feature_importances_
     print(feat_important)
+
     
- def NHANES2():
+def NHANES2():
     """Random Forest: NHANES important features"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 10.csv')
+    dataset = pd.read_csv(r'..\data\feature set 10.csv')
 
     label = LabelEncoder()
     dataset["RIAGENDR 2"] = label.fit_transform(dataset["RIAGENDR 2"])
@@ -1154,12 +1162,14 @@ def NHANES1():
                "LBXGLURIDRETH3 1", "LBXTRBMXWT 1"]
 
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
-                                                        test_size=0.3, random_state=215) 
+                                                        test_size=0.3, random_state=215)
 
 
     RFC1 = RandomForestClassifier(
-                                  oob_score=True,
-                                  random_state=215)
+                                    oob_score=True,
+                                    max_samples=108,
+                                    random_state=215
+    )
     RFC1.fit(X_train, Y_train)
 
     RFC1_train = RFC1.predict(X_train)
@@ -1170,7 +1180,7 @@ def NHANES1():
 
     pre_test = RFC1.predict_proba(X_test)[:, 1]
     FPR_NB, TPR_NB, _ = roc_curve(Y_test, pre_test)
-    aucval = auc(FPR_NB, TPR_NB)  
+    aucval = auc(FPR_NB, TPR_NB)
     plt.figure(figsize=(8, 8))
     plt.plot([0, 1], [0, 1], "k--")
     plt.plot(FPR_NB, TPR_NB, "r", linewidth=3)
@@ -1185,10 +1195,11 @@ def NHANES1():
 
     feat_important = RFC1.feature_importances_
     print(feat_important)
+
     
 def NHANES3():
     """Random Forest: NHANES Key features"""
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 11.csv')
+    dataset = pd.read_csv(r'..\data\feature set 11.csv')
 
     label = LabelEncoder()
 
@@ -1219,12 +1230,14 @@ def NHANES3():
                "LBXGLURIDRETH3 1", "LBDLDLBMXWT 1"]
 
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
-                                                        test_size=0.3, random_state=215) 
+                                                        test_size=0.3, random_state=215)
 
 
     RFC1 = RandomForestClassifier(
-                                  oob_score=True,
-                                  random_state=215)
+                                    oob_score=True,
+                                    max_samples=122,
+                                    random_state=215
+    )
     RFC1.fit(X_train, Y_train)
 
     RFC1_train = RFC1.predict(X_train)
@@ -1253,20 +1266,21 @@ def NHANES3():
 
 if __name__ == '__main__':
 
-    RFC1()     # model 1
+    # RFC1()     # model 1
     # RFC2()     # model 2
     # RFC3()     # model 3
-    # RFC4()     # model 4
+    RFC4()     # model 4
     # RFC5()     # model 5
     # RFC6()     # model 6
     # RFC7()     # model 7
     # RFC8()     # model 8
 
-    # NNC1()     # model 9
-    # NNC2()     # model 10
-    # NNC3()     # model 11
-    # NNC4()     # model 12
+    # KNN1()     # model 9
+    # KNN2()     # model 10
+    # KNN3()     # model 11
+    # KNN4()     # model 12
 
+    #
     # IRC1()        # model 13
     # IRC2()        # model 14
     # IRC3()        # model 15
