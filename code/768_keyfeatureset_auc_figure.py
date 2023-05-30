@@ -2,7 +2,6 @@
 Figure 12: ROC curves of feature set 3
 """
 
-
 import matplotlib
 matplotlib.rcParams['axes.unicode_minus'] = False
 import seaborn as sns
@@ -15,13 +14,13 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier,AdaBoostClassifier
-from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import *
 
 def k_auc_figure():
     
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 3.csv')
+    dataset = pd.read_csv(r'..\data\feature set 3.csv')
 
     
     label = LabelEncoder()
@@ -44,30 +43,25 @@ def k_auc_figure():
 
 
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
-                                                        test_size=0.3, random_state=123)  
-
+                                                        test_size=0.3, random_state=123)
 
     RFC1 = RandomForestClassifier(
         oob_score=True,
-        random_state=16
+        max_samples=46,
+        random_state=123
     )
     RFC1.fit(X_train, Y_train)
 
-
-    MLP1 = MLPClassifier(
-        random_state=63
-    )
-    MLP1.fit(X_train, Y_train)
-
+    knn1 = KNeighborsClassifier(n_neighbors=7)
+    knn1.fit(X_train, Y_train)
 
     IRC1 = LogisticRegression(
-        random_state=16
+        random_state=123
     )
     IRC1.fit(X_train, Y_train)
 
-
     ABC1 = AdaBoostClassifier(
-        random_state=16
+        random_state=123
     )
     ABC1.fit(X_train, Y_train)
 
@@ -76,7 +70,7 @@ def k_auc_figure():
     FPR_NB1, TPR_NB1, _ = roc_curve(Y_test, pre_test1)
     aucval1 = auc(FPR_NB1, TPR_NB1)  
 
-    pre_test2 = MLP1.predict_proba(X_test)[:, 1]
+    pre_test2 = knn1.predict_proba(X_test)[:, 1]
     FPR_NB2, TPR_NB2, _ = roc_curve(Y_test, pre_test2)
     aucval2 = auc(FPR_NB2, TPR_NB2)  
 
@@ -91,7 +85,7 @@ def k_auc_figure():
     plt.figure(figsize=(8, 8), dpi=120)
     plt.plot([0, 1], [0, 1], "k--")
     plt.plot(FPR_NB1, TPR_NB1, "r", linewidth=3, label="Model 3(feature set 3 + RF)")
-    plt.plot(FPR_NB2, TPR_NB2, "b", linewidth=3, label="Model 10(feature set 3 + ANN)")
+    plt.plot(FPR_NB2, TPR_NB2, "b", linewidth=3, label="Model 10(feature set 3 + KNN)")
     plt.plot(FPR_NB3, TPR_NB3, "g", linewidth=3, label="Model 14(feature set 3 + LR)")
     plt.plot(FPR_NB4, TPR_NB4, "black", linewidth=3, label="Model 18(feature set 3 + AdaBoost)")
     plt.grid()
