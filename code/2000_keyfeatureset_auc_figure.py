@@ -2,7 +2,6 @@
 Figure 14: ROC curves of feature set 6
 """
 
-
 import matplotlib
 matplotlib.rcParams['axes.unicode_minus'] = False
 import seaborn as sns
@@ -14,14 +13,13 @@ warnings.filterwarnings("ignore")
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier,AdaBoostClassifier
-from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import *
 
 def o_auc_figure():
-    dataset = pd.read_csv(r'.\Supplemental Files\data\feature set 6.csv')
-
+    dataset = pd.read_csv(r'..\data\feature set 6.csv')
 
     label = LabelEncoder()
     dataset["GlucoseAge00"] = label.fit_transform(dataset["GlucoseAge00"])
@@ -40,26 +38,25 @@ def o_auc_figure():
                "GlucoseBloodPressure11", "GlucoseBMI11", "BloodPressureBMI11", "DiabetesPedigreeFunctionAge11"]
 
     X_train, X_test, Y_train, Y_test = train_test_split(dataset[train_x], dataset[target],
-                                                        test_size=0.3, random_state=123)  
+                                                        test_size=0.3, random_state=123)
 
     RFC1 = RandomForestClassifier(
         oob_score=True,
-        random_state=16
+        max_samples=978,
+        random_state=123
     )
     RFC1.fit(X_train, Y_train)
 
-    MLP1 = MLPClassifier(
-        random_state=16
-    )
-    MLP1.fit(X_train, Y_train)
+    knn1 = KNeighborsClassifier(n_neighbors=12)
+    knn1.fit(X_train, Y_train)
 
     IRC1 = LogisticRegression(
-        random_state=16
+        random_state=123
     )
     IRC1.fit(X_train, Y_train)
 
     ABC1 = AdaBoostClassifier(
-        random_state=16
+        random_state=123
     )
     ABC1.fit(X_train, Y_train)
 
@@ -67,7 +64,7 @@ def o_auc_figure():
     FPR_NB1, TPR_NB1, _ = roc_curve(Y_test, pre_test1)
     aucval1 = auc(FPR_NB1, TPR_NB1)  
 
-    pre_test2 = MLP1.predict_proba(X_test)[:, 1]
+    pre_test2 = knn1.predict_proba(X_test)[:, 1]
     FPR_NB2, TPR_NB2, _ = roc_curve(Y_test, pre_test2)
     aucval2 = auc(FPR_NB2, TPR_NB2)  
 
@@ -82,7 +79,7 @@ def o_auc_figure():
     plt.figure(figsize=(8, 8), dpi=120)
     plt.plot([0, 1], [0, 1], "k--")
     plt.plot(FPR_NB1, TPR_NB1, "r", linewidth=3, label="Model 6(feature set 6 + RF)")
-    plt.plot(FPR_NB2, TPR_NB2, "b", linewidth=3, label="Model 12(feature set 6 + ANN)")
+    plt.plot(FPR_NB2, TPR_NB2, "b", linewidth=3, label="Model 12(feature set 6 + KNN)")
     plt.plot(FPR_NB3, TPR_NB3, "g", linewidth=3, label="Model 16(feature set 6+ LR)")
     plt.plot(FPR_NB4, TPR_NB4, "black", linewidth=3, label="Model 20(feature set 6 + AdaBoost)")
     plt.grid()
